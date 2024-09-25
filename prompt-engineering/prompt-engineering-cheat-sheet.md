@@ -22,5 +22,22 @@ This type of prompting can be very useful when you need your response to be form
 The one major downside to few shot prompting is that examples can end up being quite long. For example, coding examples we might add and share can easily be thousands of tokens long, and that’s possible to define a single function. Giving an example of an entire class, file, or project can easily push us out of our limits. Many models still have context limits restricted to 2k, 4k, or 8k. Since token limits are often restrictive, it can be difficult to balance adding another example or giving the user more space. Also, we often pay per token so few shot prompting can be much more expensive than other prompting techniques. Because of this, many have turned to one shot prompting, to be more efficient and save money.
 
 # One Shot Prompting
+One-shot learning is a machine learning concept where a model is expected to make accurate predictions given only a single example of each new class during training. In the context of Large Language Models and prompting, one-shot refers to situations where the model has to understand and execute a task based on a single, clear instruction or example in the prompt, often without having seen similar examples during training. It's the effort of crafting the perfect example to get the expected results.
+
+Consider our sentiment analysis example above, if you gave a model only one positive example, you’re likely to bias the model to only give positive classifications. Especially if the model never saw such a problem before. So how can one shot prompting ever be achieved? Thankfully, while this seems impossible at the outset, it’s actually quite achievable. Afterall, few shot prompting is very effective, but follows the law of diminishing returns. Each new example improves only marginally. The first example always does the most lifting.
+
+LLMs can perform well on one-shot tasks due to the extensive pre-training they undergo on large and diverse datasets. During this pre-training, the models learn a wide array of language patterns, concepts, and structures, giving them a broad understanding of language and the world. When given a new one-shot task, they leverage this learned understanding to comprehend the task and generate a response, even if the exact task was not part of their training data. Here’s an example of a prompt attempting to coerce the model using one shot prompting to respond to a word problem correctly:
+
+    ```
+        User: Answer this question. Think it through step by step, so that we know it’s correct:
+        A dad and his son were in an accident and rushed to a hospital. The man’s son was in the operating room and the doctor said, “I can’t operate on you. You’re my son.” How is that possible?
+        Assistant: The son and the father were both injured, meaning that the only other person that the doctor could be and still have the same son is the father’s spouse, maybe a mother, or another father perhaps.
+        User: Answer this question. Think it through step by step, so that we know it’s correct:
+        How could it be possible to be your own grandpa?
+        Assistant:
+    ```
+the ability of LLMs to handle one-shot tasks improves as they are scaled up—as the model size increases and they are trained on more diverse and larger datasets, their capacity to generalize from their training to unseen one-shot tasks also improves. Nonetheless, it's worth noting that while LLMs can perform impressively on one-shot tasks, they are not perfect and their performance can still vary based on the complexity and specificity of the task. Despite this, one shot prompting generally needs much less data and only one example to craft. This can make them more accessible, faster to craft, and easier to experiment with. Because of this it has led researchers to push the boundaries even further.
+
+
 
 
