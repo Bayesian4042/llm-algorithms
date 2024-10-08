@@ -74,7 +74,7 @@ The next element is the context the model will need to respond appropriately. In
 
 Context can be lots of different things though, and not just RAG search results. It could be the current time, weather information, current events, or even just the chat history. You will often also want to include some database look up information about the user to provide a more personalized experience. All of this is information we might look up at the time of query, but context can often be static. For example, one of the most important pieces of information to include in the context is examples to help guide the model via few shot or one shot prompting. If your examples are static and not dynamic though, they likely are just hard coded into the instruction template. The context often contains the answers to the users’ query and we are simply using the LLM to clean, summarize, and format an appropriate response. Ultimately, any pragmatics the model lacks will need to be given in the context.
 The last element is the system prompt. The system prompt is a prompt that will be appended and used on every request by every user. It is designed to give a consistent user experience. Generally, it’s where we would include role prompting or style prompting. Some examples of such role prompting or style prompting could include:
-   
+
     ```
         Take this paragraph and rephrase it to have a cheerful tone and be both informative and perky.
         You are a wise old owl who helps adventurers on their quest.
