@@ -92,6 +92,8 @@ Another aspect of prompt engineering you won’t see with simple prompting is pr
 The temperature parameter determines the level of randomness your model will account for when generating tokens. Setting it to zero will ensure the model will always respond the exact same way when presented with identical prompts. This is critical for jobs where we want our results to be predictable, but can leave our models stuck in a rut. Setting it to a higher value will make it more creative. Setting it negative will tell it to give you the opposite response to your prompt.
 
 To understand this parameter better, it might help to look closer at how a model is determining the next token. In below figure, there is an example of this process. Given the input "Iam a", a language model will genrate a list of probabilities for each token. These probabilities show the likelihood that each token will be chosen.
+![Model](./model.png)
+
 
 Temperature is applied during the softmax algorithm, a higher temperature will flatten out the probability distribution giving less weight to tokens with large logits, and more weights to tokens with smaller logits. A lower temperature does the opposite. A temperature of zero is actually impossible, since we can’t divide by zero. Instead we run an argmax algorithm ensuring we simply just pick the token with the highest logit.
 
