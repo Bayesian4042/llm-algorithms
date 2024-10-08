@@ -85,7 +85,55 @@ The last element is the system prompt. The system prompt is a prompt that will b
         System prompt - specific instruction given to the model on every request to enforce a certain user experience (e.g. talk like a pirate).
     ```
 
+# Prompting Hyperparameters
+Another aspect of prompt engineering you won’t see with simple prompting is prompt hyperparameter tuning. There are several hyperparameters you can set when making a query in addition to the prompt to increase or decrease the diversity of responses. Depending on your objective, the value of these parameters can greatly improve or even be a detriment to the query results for your users.
 
+## Temperature
+The temperature parameter determines the level of randomness your model will account for when generating tokens. Setting it to zero will ensure the model will always respond the exact same way when presented with identical prompts. This is critical for jobs where we want our results to be predictable, but can leave our models stuck in a rut. Setting it to a higher value will make it more creative. Setting it negative will tell it to give you the opposite response to your prompt.
 
+To understand this parameter better, it might help to look closer at how a model is determining the next token. In below figure, there is an example of this process. Given the input "Iam a", a language model will genrate a list of probabilities for each token. These probabilities show the likelihood that each token will be chosen.
 
+Temperature is applied during the softmax algorithm, a higher temperature will flatten out the probability distribution giving less weight to tokens with large logits, and more weights to tokens with smaller logits. A lower temperature does the opposite. A temperature of zero is actually impossible, since we can’t divide by zero. Instead we run an argmax algorithm ensuring we simply just pick the token with the highest logit.
 
+## Number of beams
+## Top K
+## Top P
+
+# Prompt Enginerring Tooling
+## LangChain
+## Guidance
+Guidance is an open source library that comes from Microsoft that enforces programmatic responses.   Guidance seeks to constrain the response space, setting custom stopping tokens, and complex templating.
+
+## DSPy
+
+# Advanced Prompt Engineering Techniques
+## Giving LLMs Tools
+What if instead of a complicated prompt engineering system, we instead just give our model access to the internet? If it knows how to search the internet then it can always find up-to-date information. While we are at it, we can give it access to a calculator so we don’t have to waste CPU cycles having the LLM itself do basic math. We can give it access to a clock so it knows the current time and maybe even a weather app so it can tell the weather. The sky's the limit! We just need to train the model how to use tools, and that’s where Toolformers comes in.
+
+we can use clever prompt engineering to introduce new tools using LangChain or Guidance.
+## ReAct
+Reasoning and Acting (ReAct) is a few-shot framework for prompting that is meant to emulate the way that people reason and make decisions when learning new tasks.[14] It involves a multi-step process for the LLM, where a question is asked, the model determines an action, then observes and reasons upon the results of that action in order to determine subsequent actions.
+An example could look like this:
+    ```
+        Question: What is the airspeed velocity of an unladen African swallow compared to a European swallow with the same load?
+        Thought 1: I need to search for airspeed velocity of a European swallow, so I can compare it with an African swallow.
+        Action 1: Search[European Swallow airspeed velocity]
+        Observation 1: We need to know the Strouhal number in order to determine airspeed. The bird's Strouhal number converges between 0.2 and 0.4.
+    ```
+
+As you can see in this example, the purpose of ReAct is to force the model to think before it acts. This isn’t much different from the other prompting methods we have discussed. The big difference is that we allow the model to take actions. In our example above, this included a “Search” action, or essentially an ability to look up information on the internet as a human would
+
+# Summary
+- The most straightforward approach to prompting is to just give a model examples of what you want it to do.
+- The more examples you can add to a prompt the more accurate your results will be.
+- The fewer examples you need to add, the more general and all purpose your prompt will be.
+- The four parts of a prompt are:
+    - Input - this is what the user writes.
+    - Instruction - this is the template with task specific information encoded. 
+    - Context - this is information you add through RAG or other database lookups.
+    - System - specific instructions given for every task, should be hidden from the user.
+- Knowing your training data will help you craft better prompts by choosing a word order that matches the training data.
+- LangChain is a popular tool that allows us to create chains or pipelines to utilize LLMs in an engineering fashion.
+- Guidance is a powerful tool that gives us more fine grained control over the LLMs actual generated text.
+- Toolformers taught LLMs how to use tools which gives them access to accomplish previously impossible tasks.
+- ReAct is a few-shot framework for prompting that is meant to emulate the way that people reason and make decisions when learning new tasks.
