@@ -47,4 +47,45 @@ There isn't of course a perfect zero shot prompt yet and it's a continuing part 
 
 Some other notable findings have left researches shocked that the approach worked, or example, offering an imaginary tip to a model will return better results. In addition, the authors have found strategies like telling the model you’ll lose your job if it doesn’t help you or even threatening to fire the model if it does a terrible job has elicited better results. Similar to the original “think step by step”, asking the model to “take a deep breath” can also ensure better outputs particularly in math problems. It seems most strategies humans use, or use on other humans, to produce better work are fair game. Of course, the best trick will depend on which model you use and the underlying data it was trained on.
 
+# Prompt Engineering Basics
+
+There are several challenges with prompt engineering over regular prompting. For example, prompt engineering relies particularly upon knowing the format the user expects the answer to be in. With prompting you are the user, so you can just keep trying till you see an answer you like, that doesn’t fly in prompt engineering.
+
+A bigger issue is that when building an application, your end users will have varying levels of knowledge on how to craft a prompt. Some may not have any skill and will struggle to get good responses, and others will have so much skill they will likely try to persuade your LLM to go off the rails you’ve set for it. Regardless, our goal is to build railings in such a way that skilled users won’t be able to derail your application and unskilled users will have a smooth ride. A user’s skill in crafting a prompt shouldn’t be the determining factor of a successful experience.
+
+a good prompt engineer should be able to tell you rather quickly whether or not the solution you are trying to build can be done with prompt engineering at all. Even utilizing advanced techniques like RAG there are limitations on what you can do with prompt engineering alone. Knowing when you need to send a model back for additional finetuning is invaluable and can save your team from spinning their wheels for weeks without any progress.
+
+# Anatomy of Prompt
+To an engineer, a prompt is made up of a few elements, and identifying these elements makes it easier to create a framework to solve your use case and provide a better example for your users. Let’s say we are building an internal chatbot for our company to help answer HR related questions based on internal documentation. One prompt we might expect from a user would be, “How much does the company match for our 401k?”. This is the first element to a prompt, the input or user’s prompt. If you have only ever used LLM apps and have never built them, this is likely all you’ve ever seen. Generally the input is gathered from a free form text box and so it’s important to note that it can almost be anything. Oftentimes it will be awful, riddled with typos and mistakes, and not written in a manner to speak to a bot but to speak to another human.
+    Real example in which the bot responded in the most probable way to user's satisfaction.
+    LLM response : ```
+        System: You are a helpful assistant who knows about all company policies at XYZ company. Be courteous and keep conversations strictly related to the company. Offer links when available so users can look at the documentation themselves.
+    User: How much does the company match for our 401k?
+    Context: <Examples from a VectorDB search for closest document> System: Strictly answer the user’s question, and only if it relates to company policies. If you don’t know the answer, simply say so. Be courteous and keep conversations strictly related to the company. Assistant: Sure, I can help you with that! The company currently offers a 4% match to your 401k. You can find more details...
+
+    ```
+Giving an LLM information in a structured format improves the model’s chance of responding correctly. So let’s break down what we are seeing.
+
+First, to improve results, we will often take the user’s prompt and inject it into an instruction set or template. One of the most basic templates and a great example is the Q&A bot template which we showed earlier and would have looked like this: “Q: How much does the company match for our 401k? A:”. Generally, in this section though there will be an instruction given to direct the model. This doesn’t have to be much, but oftentimes it will be much more detailed. For example, “Answer the following question and explain it as if the user was a five year old. Q: How much does the company match for our 401k? A:”.
+
+The next element is the context the model will need to respond appropriately. In our example, it’s very likely we haven’t finetuned a model to actually know XYZ’s company policies. What we need to do is give it to the model inside the prompt. In our example, we are likely doing this with RAG and where we would add the results from a semantic search.
+
+Context can be lots of different things though, and not just RAG search results. It could be the current time, weather information, current events, or even just the chat history. You will often also want to include some database look up information about the user to provide a more personalized experience. All of this is information we might look up at the time of query, but context can often be static. For example, one of the most important pieces of information to include in the context is examples to help guide the model via few shot or one shot prompting. If your examples are static and not dynamic though, they likely are just hard coded into the instruction template. The context often contains the answers to the users’ query and we are simply using the LLM to clean, summarize, and format an appropriate response. Ultimately, any pragmatics the model lacks will need to be given in the context.
+The last element is the system prompt. The system prompt is a prompt that will be appended and used on every request by every user. It is designed to give a consistent user experience. Generally, it’s where we would include role prompting or style prompting. Some examples of such role prompting or style prompting could include:
+    ```
+        Take this paragraph and rephrase it to have a cheerful tone and be both informative and perky.
+        You are a wise old owl who helps adventurers on their quest.
+        In the form of a poem written by a pirate.
+    ```
+    ```
+        PARTS OF THE PROMPT .
+        Input - what the user wrote, can be anything.
+        Instruction - the template used, often containing detail and instructions to guide the model.
+        Context - pragmatics the model needs to respond appropriately (e.g. examples, database lookups, RAG).
+        System prompt - specific instruction given to the model on every request to enforce a certain user experience (e.g. talk like a pirate).
+    ```
+
+
+
+
 
