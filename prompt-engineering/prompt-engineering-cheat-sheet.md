@@ -59,12 +59,13 @@ a good prompt engineer should be able to tell you rather quickly whether or not 
 To an engineer, a prompt is made up of a few elements, and identifying these elements makes it easier to create a framework to solve your use case and provide a better example for your users. Let’s say we are building an internal chatbot for our company to help answer HR related questions based on internal documentation. One prompt we might expect from a user would be, “How much does the company match for our 401k?”. This is the first element to a prompt, the input or user’s prompt. If you have only ever used LLM apps and have never built them, this is likely all you’ve ever seen. Generally the input is gathered from a free form text box and so it’s important to note that it can almost be anything. Oftentimes it will be awful, riddled with typos and mistakes, and not written in a manner to speak to a bot but to speak to another human.
     Real example in which the bot responded in the most probable way to user's satisfaction.
     LLM response : 
+    
     ```
         System: You are a helpful assistant who knows about all company policies at XYZ company. Be courteous and keep conversations strictly related to the company. Offer links when available so users can look at the documentation themselves.
     User: How much does the company match for our 401k?
     Context: <Examples from a VectorDB search for closest document> System: Strictly answer the user’s question, and only if it relates to company policies. If you don’t know the answer, simply say so. Be courteous and keep conversations strictly related to the company. Assistant: Sure, I can help you with that! The company currently offers a 4% match to your 401k. You can find more details...
     ```
-    
+
 Giving an LLM information in a structured format improves the model’s chance of responding correctly. So let’s break down what we are seeing.
 
 First, to improve results, we will often take the user’s prompt and inject it into an instruction set or template. One of the most basic templates and a great example is the Q&A bot template which we showed earlier and would have looked like this: “Q: How much does the company match for our 401k? A:”. Generally, in this section though there will be an instruction given to direct the model. This doesn’t have to be much, but oftentimes it will be much more detailed. For example, “Answer the following question and explain it as if the user was a five year old. Q: How much does the company match for our 401k? A:”.
