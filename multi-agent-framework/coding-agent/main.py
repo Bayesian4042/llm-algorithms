@@ -182,5 +182,8 @@ class CodingAgent:
                     print("Done")
                     break
 
+                else:
+                    break
+
         except Exception as e:
             print(f"Error in run: {str(e)}")
