@@ -10,10 +10,8 @@ from opik import track
 
 class CodingAgent:
     def __init__(self):
-        # Load environment variables
         self._load_credentials()
         
-        # Initialize API clients
         self.openai_client = AzureOpenAI(
             api_key=self.openai_api_key,
             azure_endpoint=self.azure_endpoint,
@@ -23,7 +21,6 @@ class CodingAgent:
         
         self.tavily_client = TavilyClient(api_key=self.tavily_api_key)
         
-        # Constants
         self.MAX_DEBUGGER_LIMIT = 3
         self.system_prompt = get_system_prompt()
 
