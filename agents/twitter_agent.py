@@ -2,9 +2,87 @@ from playwright.sync_api import sync_playwright
 import time
 import logging
 from urllib.parse import urlparse
+import openai
+import json
+from datetime import datetime
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+openai.api_key = 'your-api-key-here'
+
+def analyze_sentiment_and_signals(text, cashtag):
+    """Analyze text using GPT-4 for trading signals"""
+    try:
+        prompt = f"""Analyze this tweet/comment about {cashtag} and extract the following information in JSON format:
+        1. Sentiment (bullish, bearish, or neutral)
+        2. Key points mentioned
+        3. Any specific price targets or predictions
+        4. Confidence level (low, medium, high)
+        5. Technical analysis mentions
+        6. Fundamental analysis points
+        
+        Tweet/Comment: {text}
+        
+        Format the response as valid JSON with these exact keys:
+        {{
+            "sentiment": "",
+            "key_points": [],
+            "price_targets": [],
+            "confidence": "",
+            "technical_analysis": [],
+            "fundamental_analysis": []
+        }}
+        """
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a financial analyst expert. Extract trading signals and sentiment from social media posts."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3
+        )
+
+        # Parse the response
+        analysis = json.loads(response.choices[0].message.content)
+        return analysis
+
+    except Exception as e:
+        logger.error(f"Error in sentiment analysis: {e}")
+        return None
+    
+def aggregate_signals(tweets_with_analysis):
+    """Aggregate all signals and generate a summary"""
+    try:
+        summary_prompt = f"""Analyze these collected signals and generate a comprehensive summary:
+
+        Data: {json.dumps(tweets_with_analysis, indent=2)}
+
+        Please provide:
+        1. Overall market sentiment
+        2. Key consensus points
+        3. Common price targets
+        4. Notable disagreements
+        5. Trading recommendation
+        
+        Format as JSON."""
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a financial analyst. Synthesize multiple trading signals into actionable insights."},
+                {"role": "user", "content": summary_prompt}
+            ],
+            temperature=0.3
+        )
+
+        return json.loads(response.choices[0].message.content)
+
+    except Exception as e:
+        logger.error(f"Error in signal aggregation: {e}")
+        return None
 
 def extract_tweet_id(url):
     """Extract tweet ID from URL"""
