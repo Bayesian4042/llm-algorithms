@@ -1,4 +1,5 @@
 multi-agent-framework/coding-agent/venv
+multi-agent-framework/coding-agent/.env
 multi-agent-framework/coding-agent/__pycache__
 venv-multi-agent
 llm-memory/venv

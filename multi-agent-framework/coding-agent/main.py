@@ -187,3 +187,8 @@ class CodingAgent:
 
         except Exception as e:
             print(f"Error in run: {str(e)}")
+
+coding_agent = CodingAgent()
+coding_agent.run(
+    """Create a GET /search API that takes a query parameter and returns a list of GitHub repositories matching the query by fetching data from the GitHub Search API. Handle errors like invalid queries or API rate limits gracefully"""
+)
