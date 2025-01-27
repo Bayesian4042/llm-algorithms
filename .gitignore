@@ -1,1 +1,8 @@
+multi-agent-framework/coding-agent/venv
+multi-agent-framework/coding-agent/__pycache__
 venv-multi-agent
+llm-memory/venv
+llm-memory/.env
+**/**/*.json
+**/**/*.csv
+venv
